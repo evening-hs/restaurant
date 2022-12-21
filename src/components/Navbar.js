@@ -7,7 +7,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Navbar_() {
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar 
+        sticky="top"
+        bg="light" 
+        expand="lg">
         <Container fluid>
             <Navbar.Brand href="#home"><img
               alt="Coffe_Time_Logo"
@@ -19,6 +22,7 @@ function Navbar_() {
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
             <Nav 
+            
             className="me-auto my-2 my-lg-0"
             style={{ maxHeight : '100px'}}
             navbarScroll>
@@ -39,7 +43,7 @@ function Navbar_() {
               className="me-2"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-dark" disabled>Search</Button>
           </Form>
             </Navbar.Collapse>
         </Container>
