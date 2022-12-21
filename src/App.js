@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.scss';
 import Navbar from './components/Navbar';
+import Offcanvas from './components/Offcanvas';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
@@ -22,7 +23,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <Offcanvas />
     </div>
+    
   );
 }
 
