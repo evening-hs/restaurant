@@ -1,5 +1,5 @@
-@import "~bootstrap/scss/bootstrap";
-
+@use "~bootstrap/scss/bootstrap";
+@use './scss/components/navbar';
 
 .App {
     text-align: center;
