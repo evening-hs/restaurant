@@ -4,3 +4,18 @@
     padding: 0;
     user-select: none;
 }
+.accordion::cue{
+    all: unset; 
+}
+
+.accordion-item{
+    box-shadow: none;
+}
+
+.accordion-body{
+    all: unset;
+}
+
+.show{
+    padding: 0;
+}
