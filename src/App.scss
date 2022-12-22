@@ -1,6 +1,8 @@
 @use "~bootstrap/scss/bootstrap";
 @use './scss/components/navbar';
 
+$primary: #1452cf;
+
 .App {
     text-align: center;
   }
