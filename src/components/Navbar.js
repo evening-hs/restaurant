@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import NavDropdown_ItemDropdown from './NavDropdown_ItemDropdown';
+import NavDoubleDropdown from './NavDoubleDropdwon';
 
 function Navbar_() {
     return (
@@ -29,7 +29,7 @@ function Navbar_() {
             navbarScroll>
                 <Nav.Link href="#home">Home</Nav.Link>
                 <Nav.Link href="#link">Link</Nav.Link>
-                <NavDropdown_ItemDropdown />
+                <NavDoubleDropdown title="Categories"/>
                 <NavDropdown title="Dropdown" id="navbarScrolliingDropdown">                    
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

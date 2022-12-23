@@ -1,12 +1,13 @@
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Accordion from 'react-bootstrap/Accordion';
 
-function NavDropdown_ItemDropdown() {
+function NavDoubleDropdown({title, items}) {
     return (
         <div>
-            <NavDropdown title="Hello">
+            <NavDropdown menuVariant='double' title={title}>
+                
                 <Accordion bsPrefix='accordion accordion-nav'>
-                    <Accordion.Item >
+                    <Accordion.Item>
                         <Accordion.Header>Accordion Item #1</Accordion.Header>
                         <Accordion.Body>
                             
@@ -24,4 +25,4 @@ function NavDropdown_ItemDropdown() {
     );
 }
 
-export default NavDropdown_ItemDropdown;
+export default NavDoubleDropdown;
