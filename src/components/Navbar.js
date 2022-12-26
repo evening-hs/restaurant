@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import NavDoubleDropdown from './NavDoubleDropdwon';
 
+/* Just Testing */
 function Navbar_() {
     return (
         <Navbar 
