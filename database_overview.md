@@ -12,10 +12,10 @@ Platillo con una sola variación
     description: "",	// Opcional
     image: Image,
     price: 0.0,
-    category: "",	// Entrada, Postres, Bebidas...
-    ingredients: [""],
-    season_start: Date,
-    season_end: Date
+    category: "",		// Entrada, Postres, Bebidas...
+    ingredients: [""],	// Opcional
+    season_start: Date,	// Opcional
+    season_end: Date	// Opcional
 }
 ````
 
@@ -47,7 +47,8 @@ Platillo con variaciones, etc ingredientes extra.
 {
     date: ISODate(),
     reservation: ObjectId(reservacion),	// Opcional
-    waiter: ObjectId(empleado),			// Opcional
+    waiter: ObjectId(empleado),
+    total: 0.0,
     tip: 0.0,
     table: 0,
     subsidiary: ObjectId(sucursal),
@@ -95,7 +96,36 @@ Platillo con variaciones, etc ingredientes extra.
     phone: "",
     email: "",
     password: "",
-    schedule: "",	// Cuál sería la mejor manera de guardarlo
+    schedule: {
+        sunday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        monday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        tuesday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        wednesday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        thursday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        friday: {
+            start: ISODate(),
+            end: ISODate()
+        },
+        saturday: {
+            start: ISODate(),
+            end: ISODate()
+        }
+    },
     salary: 0.0,
     legal_documents: [""],	// Arreglo de direcciones de los archivos almacenados en el servidor
     permissions: ObjectId(permisos)
@@ -147,6 +177,8 @@ Los tipos de empleados pienso guardarlos como plantillas en el la interfaz de us
 
 ````json
 {
+    name: "", // Recepcionista, Mesero, Personalizado...
+    
     add_subsidiaries: true,
     remove_subsidiaries: true,
     update_any_subsidiary: true,
