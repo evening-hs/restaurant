@@ -85,8 +85,6 @@ Platillo con variaciones, etc ingredientes extra.
 
 ### Empleados
 
-**Por terminar**
-
 ````json
 {
     name: "",
@@ -96,6 +94,7 @@ Platillo con variaciones, etc ingredientes extra.
     phone: "",
     email: "",
     password: "",
+    is_active: boolean,
     schedule: {
         sunday: {
             start: ISODate(),
@@ -128,7 +127,7 @@ Platillo con variaciones, etc ingredientes extra.
     },
     salary: 0.0,
     legal_documents: [""],	// Arreglo de direcciones de los archivos almacenados en el servidor
-    permissions: ObjectId(permisos)
+    permissions: ObjectId(permisos),
 }
 ````
 
