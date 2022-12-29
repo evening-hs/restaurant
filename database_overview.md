@@ -79,7 +79,7 @@ Platillo con variaciones, etc ingredientes extra.
     },
     manager: ObjectId(empleado),
     employees: [ObjectId(empleado)],
-    dishes_and_drinks: [ObjectId(menu_item)]
+    menu_items: [ObjectId(menu_item)]
 }
 ````
 
