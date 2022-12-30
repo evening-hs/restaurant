@@ -15,7 +15,8 @@ Platillo con una sola variación
     category: "",		// Entrada, Postres, Bebidas...
     ingredients: [""],	// Opcional
     season_start: Date,	// Opcional
-    season_end: Date	// Opcional
+    season_end: Date,	// Opcional
+    subsidiary: ObjectId(sucursal)	// Si no existe este campo, entonces el item es global
 }
 ````
 
@@ -30,6 +31,7 @@ Platillo con variaciones, etc ingredientes extra.
     ingredients: [""],	// Ingrediente común
     season_start: Date,
     season_end: Date,
+    subsidiary: ObjectId(sucursal),	// Si no existe este campo, entonces el item es global
     variations: [
         {
             name: "",
@@ -78,7 +80,6 @@ Platillo con variaciones, etc ingredientes extra.
         twitter: "",	// Opcionales
     },
     manager: ObjectId(empleado),
-    menu_items: [ObjectId(menu_item)]
 }
 ````
 
