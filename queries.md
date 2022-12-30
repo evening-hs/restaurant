@@ -181,10 +181,134 @@
 
 ## 2. Cuentas
 
-1. Listar todas las cuentas por fecha
-2. Listar todas las cuentas de un mesero
-3. Listar los platillos más comprados
-4. Listar todas las cuentas de una sucursal
+1. Listar todas las cuentas por fecha.
+
+   ````json
+   db.bills.find().sort({date: -1})
+   ````
+2. Listar todas las cuentas de un mesero por id.
+
+   ````json
+   db.bills.find({"waiter": ObjectId("ID")})).sort({date: -1})
+   ````
+3. Listar todas las cuentas de un mesero por nombre.
+
+   Primero se busca el mesero con:
+
+   ````json
+   db.employees.find({
+       position: "Mesero",
+         name: {
+           $regex: "NOMBRE*",
+           $options: 'i'
+         }
+   })
+   ````
+
+   El usuario hace clic en el mesero y se obtiene su id.
+4. Listar los 5 platillos más comprados.
+
+   ````json
+   [
+     {
+       /**
+        * Hide unused fields
+        */
+       $project: {
+         _id: 0,
+         date: 0,
+         reservation: 0,
+         waiter: 0,
+         total: 0,
+         tip: 0,
+         table: 0,
+         subsidiary: 0,
+       },
+     },
+     {
+       /**
+        * Unwind the menu_items ids array
+        */
+       $unwind: {
+         path: "$orders",
+         preserveNullAndEmptyArrays: false,
+       },
+     },
+     {
+       /**
+        * Count the repetition of each id
+        */
+       $group: {
+         _id: "$orders",
+         count: { $sum: 1 },
+       },
+     },
+     {
+       /**
+        * Sort by repeated, from max to min
+        */
+       $sort: {
+         count: -1,
+       },
+     },
+     {
+       /**
+        * Provide the number of documents to limit.
+        */
+       $limit: 5,
+     },
+     {
+       /**
+        * Get the information of the top items
+        */
+       $lookup: {
+         from: "menu_items",
+         localField: "_id",
+         foreignField: "_id",
+         as: "top_info",
+       },
+     },
+     {
+       /**
+        * Hide the unused fields
+        */
+       $project: {
+         _id: 0,
+         count: 0,
+       },
+     },
+     {
+       /**
+        * Unwind the items info
+        */
+       $unwind: {
+         path: "$top_info",
+         preserveNullAndEmptyArrays: false,
+       },
+     },
+   ]
+   ````
+
+   
+5. Listar todas las cuentas de una sucursal por id.
+
+   ````json
+   db.bills.find({"subsidiary": ObjectId("ID")}).sort({date: -1})
+   ````
+6. Listar todas las cuentas de una sucursal por nombre.
+
+   Primero se busca la sucursal con:
+
+   ````json
+   db.subsidiaries.find({
+       name: {
+           $regex: "NOMBRE*",
+           $options: 'i'
+         }
+   })
+   ````
+
+   El usuario hace clic en la sucursal y se obtiene su id.
 
 ## Sucursales
 
