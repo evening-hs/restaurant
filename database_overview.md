@@ -78,7 +78,6 @@ Platillo con variaciones, etc ingredientes extra.
         twitter: "",	// Opcionales
     },
     manager: ObjectId(empleado),
-    employees: [ObjectId(empleado)],
     menu_items: [ObjectId(menu_item)]
 }
 ````
@@ -95,6 +94,7 @@ Platillo con variaciones, etc ingredientes extra.
     email: "",
     password: "",
     is_active: boolean,
+    subsidiary: ObjectId(sucursal),
     schedule: {
         sunday: {
             start: ISODate(),
