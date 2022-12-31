@@ -31,8 +31,6 @@
    db.menu_items.find({$and: [{"category": "CATEGORY"},{$or: [{"season_start": {$exists: false}},{$and: [{"season_start": {$lte: new Date()}},{"season_end": {$gte: new Date()}}]}]}]})
    ````
 
-   
-
 2. Buscar un platillo por nombre en todas las sucursales, (Sólo el administrador general puede usarlo).
 
    ````json
@@ -47,8 +45,6 @@
    ````json
    db.menu_items.find({"name": {$regex: 'CADENA*',$options: 'i'}})
    ````
-
-   
 
 3. Listar todos los platillos de una sola categoría en una sucursal.
 
@@ -102,7 +98,7 @@
                        "subsidiary": {$exists: false}
                    },
                    {
-                       "subsidiary": ObjectId("63a621fe472d4a7662feeea6")
+                       "subsidiary": ObjectId("ID_SUCURSAL")
                    }
                ]
            },
@@ -115,8 +111,6 @@
        ]
    })
    ````
-   
-   
 
 
 ## 2. Cuentas
@@ -149,7 +143,7 @@
 4. Listar los 5 platillos más comprados.
 
    ````json
-   db.bi{[
+   db.bills.aggregate{[
      {
        /**
         * Hide unused fields
@@ -242,8 +236,8 @@
    db.subsidiaries.find({
        name: {
            $regex: "NOMBRE*",
-           $options: 'i'
-         }
+   		$options: 'i'
+   	}
    })
    ````
 
@@ -252,31 +246,127 @@
 ## Sucursales
 
 1. Listar todas las sucursales
-2. Buscar sucursales por domicilio
+
+   ````json
+   db.subsidiaries.find()
+   ````
+2. Buscar sucursales por ubicación
+
+   ````json
+   db.subsidiaries.find({
+       "address.country": {
+           $regex: "PAIS*",
+           $options: 'i'
+       },
+       "address.state": {
+           $regex: "ESTADO*",
+           $options: 'i'
+       },
+       "address.city": {
+           $regex: "CIUDAD*",
+           $options: 'i'
+       },
+   })
+   ````
 
 ## Empleados
 
-1. Listar todos los empleados
+1. Listar todos los empleados. (Sólo lo puede usar el administrador).
 
    Ordenar:
 
    - Por nombre
-   - Por fecha de contratación
-   - Por posición
-   - Activos
 
-2. Listar todos los empleados de una sucursal
+     ````json
+     db.employees.find().sort({name: 1})
+     ````
+
+   - Por fecha de contratación
+
+     ````json
+     db.employees.find().sort({hiring_date: -1})
+     ````
+
+2. Listar todos los empleados activos/inactivos. (Sólo lo puede usar el administrador).
+
+   ````json
+   db.employees.find({is_active: BOOL}).sort({name: 1})
+   ````
+
+3. Buscar empleado por nombre (admin).
+
+   ````json
+   db.employees.find({
+       name:{
+           $regex: "NOMBRE*",
+           $options: 'i'
+       }
+   })
+   ````
+
+4. Buscar empleado por correo (admin).
+
+   ````json
+   db.employees.find({
+       email: {
+           $regex: "CORREO*",
+           $options: 'i'
+       }
+   })
+   ````
+
+5. Listar todos los empleados de una sucursal.
 
    Ordenar:
 
    - Por nombre
+
+     ````json
+     db.employees.find({
+         subsidiary: ObjectId("ID_SUCURSAL")
+     }).sort({name: 1})
+     ````
+
    - Por fecha de contratación
-   - Por posición
-   - Activos
 
-3. Buscar empleado por nombre
+     ````json
+     db.employees.find({
+         subsidiary: ObjectId("ID_SUCURSAL")
+     }).sort({date: -1})
+     ````
 
-4. Buscar empleado por correo
+6. Listar todos los empleados activos/inactivos de una sucursal.
+
+   ````json
+   db.employees.find({
+       subsidiary: ObjectId("ID_SUCURSAL"),
+       is_active: BOOL
+   }).sort({name: 1})
+   ````
+
+7. Buscar empleado por nombre en una sucursal.
+
+   ````json
+   db.employees.find({
+       subsidiary: ObjectId("ID_SUCURSAL"),
+       name:{
+           $regex: "NOMBRE*",
+           $options: 'i'
+       }
+   })
+   ````
+
+8. Buscar empleador por correo en una sucursal.
+
+   ````json
+   db.employees.find({
+       subsidiary: ObjectId("ID_SUCURSAL"),
+       email: {
+           $regex: "CORREO*",
+           $options: 'i'
+       }
+   })
+   ````
 
 ## Reservaciones
 
