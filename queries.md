@@ -53,130 +53,70 @@
 3. Listar todos los platillos de una sola categoría en una sucursal.
 
    ````json
-   [
-     {
-       /**
-        * Seleccionar la sucursal
-        */
-       $match: {
-         name: "Morelia",
-       },
-     },
-     {
-       /**
-        * Seleccionar los documentos de la colección menu_items
-        * cuyo id se encuentra en el arreglo menu_items de esta colección
-        */
-       $lookup: {
-         from: "menu_items",
-         localField: "menu_items",
-         foreignField: "_id",
-         as: "menu_items_info",
-       },
-     },
-     {
-       /**
-        * Ocultar los campos que no vamos a usar
-        */
-       $project: {
-         _id: 0,
-         name: 0,
-         address: 0,
-         contact: 0,
-         manager: 0,
-         employees: 0,
-         menu_items: 0,
-       },
-     },
-     {
-       /**
-        * Expandir el arreglo resultante
-        */
-       $unwind: {
-         path: "$menu_items_info",
-       },
-     },
-     {
-       /**
-        * Filtrar los items por categoria y fecha
-        */
-       $match: {
-         $and: [
-           { "menu_items_info.category": "CATEGORIA" },
+   db.menu_items.find({
+       $and: [
+           {"category": "CATEGORIA"},
            {
-             $or: [
-               {
-                 "menu_items_info.season_start": {
-                   $exists: false,
-                 },
-               },
-               {
-                 $and: [
+               // If the document has no season
+               // or has season and it's currently active
+               $or: [
                    {
-                     "menu_items_info.season_start": {
-                       $lte: new Date(),
-                     },
+                       "season_start": {$exists: false}
                    },
                    {
-                     "menu_items_info.season_end": {
-                       $gte: new Date(),
-                     },
-                   },
-                 ],
-               },
-             ],
+                       $and: [
+                           {"season_start": {$lte: new Date()}},
+                           {"season_end": {$gte: new Date()}}
+                       ]
+                   }
+               ]
            },
-         ],
-       },
-     },
-   ]
+           {
+               // If the document has no "subsidiary", then it is global
+               // else, check if the id matches
+               $or: [
+                   {
+                       "subsidiary": {$exists: false}
+                   },
+                   {
+                       "subsidiary": ObjectId("ID_SUCURSAL")
+                   }
+               ]
+           }
+       ]
+   })
    ````
-
    
-
+   
+   
 4. Buscar un platillo por nombre en una sucursal.
 
    ````json
-   [
-     {
-       $match: {
-         name: "Morelia",
-       },
-     },
-     {
-       $lookup: {
-         from: "menu_items",
-         localField: "menu_items",
-         foreignField: "_id",
-         as: "menu_items_info",
-       },
-     },
-     {
-       $project: {
-         _id: 0,
-         name: 0,
-         address: 0,
-         contact: 0,
-         manager: 0,
-         employees: 0,
-         menu_items: 0,
-       },
-     },
-     {
-       $unwind: {
-         path: "$menu_items_info",
-       },
-     },
-     {
-       $match: {
-         "menu_items_info.name": {
-           $regex: "CADENA*",
-           $options: "i",
-         },
-       },
-     },
-   ]
+   db.menu_items.find({
+       $and: [
+           {
+               // If the document has no "subsidiary", then it is global
+               // else, check if the id matches
+               $or: [
+                   {
+                       "subsidiary": {$exists: false}
+                   },
+                   {
+                       "subsidiary": ObjectId("63a621fe472d4a7662feeea6")
+                   }
+               ]
+           },
+           {
+   			"name": {
+   				$regex: "CADENA*",
+   				$options: "i",
+   			}
+           }
+       ]
+   })
    ````
+   
+   
 
 
 ## 2. Cuentas
@@ -209,7 +149,7 @@
 4. Listar los 5 platillos más comprados.
 
    ````json
-   [
+   db.bi{[
      {
        /**
         * Hide unused fields
@@ -286,10 +226,9 @@
          preserveNullAndEmptyArrays: false,
        },
      },
-   ]
+   ]}
    ````
 
-   
 5. Listar todas las cuentas de una sucursal por id.
 
    ````json
