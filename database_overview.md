@@ -15,7 +15,8 @@ Platillo con una sola variación
     category: "",		// Entrada, Postres, Bebidas...
     ingredients: [""],	// Opcional
     season_start: Date,	// Opcional
-    season_end: Date	// Opcional
+    season_end: Date,	// Opcional
+    subsidiary: ObjectId(sucursal)	// Si no existe este campo, entonces el item es global
 }
 ````
 
@@ -30,6 +31,7 @@ Platillo con variaciones, etc ingredientes extra.
     ingredients: [""],	// Ingrediente común
     season_start: Date,
     season_end: Date,
+    subsidiary: ObjectId(sucursal),	// Si no existe este campo, entonces el item es global
     variations: [
         {
             name: "",
@@ -78,14 +80,10 @@ Platillo con variaciones, etc ingredientes extra.
         twitter: "",	// Opcionales
     },
     manager: ObjectId(empleado),
-    employees: [ObjectId(empleado)],
-    dishes_and_drinks: [ObjectId(menu_item)]
 }
 ````
 
 ### Empleados
-
-**Por terminar**
 
 ````json
 {
@@ -96,6 +94,8 @@ Platillo con variaciones, etc ingredientes extra.
     phone: "",
     email: "",
     password: "",
+    is_active: boolean,
+    subsidiary: ObjectId(sucursal),
     schedule: {
         sunday: {
             start: ISODate(),
@@ -128,7 +128,7 @@ Platillo con variaciones, etc ingredientes extra.
     },
     salary: 0.0,
     legal_documents: [""],	// Arreglo de direcciones de los archivos almacenados en el servidor
-    permissions: ObjectId(permisos)
+    permissions: ObjectId(permisos),
 }
 ````
 
