@@ -83,8 +83,6 @@
    })
    ````
    
-   
-   
 4. Buscar un platillo por nombre en una sucursal.
 
    ````json
@@ -356,7 +354,7 @@
    })
    ````
 
-8. Buscar empleador por correo en una sucursal.
+8. Buscar empleado por correo en una sucursal.
 
    ````json
    db.employees.find({
@@ -368,13 +366,198 @@
    })
    ````
 
+9. Mostrar el mesero que más vendió en el mes en una sucursal.
+
+   ````json
+   [
+     {
+       /**
+        * Select the subsidiary
+        */
+       $match: {
+         subsidiary: ObjectId("ID_SUCURSAL"),
+       },
+     },
+     {
+       /**
+        * Get the year and month
+        * of each document.
+        * And the current year and month
+        */
+       $project: {
+         year: { $year: "$date" },
+         current_year: { $year: new Date() },
+   
+         month: { $month: "$date" },
+         current_month: { $month: new Date() },
+         waiter: 1,
+       },
+     },
+     {
+       /**
+        * Select all the documents
+        * with the year and month same as today
+        */
+       $match: {
+         $expr: {
+           $and: [
+             {
+               $eq: ["$month", "$current_month"],
+             },
+             {
+               $eq: ["$year", "$current_year"],
+             },
+           ],
+         },
+       },
+     },
+     {
+       /**
+        * Calculate how many bills
+        * has each waiter
+        */
+       $group: {
+         _id: "$waiter",
+         total_bills: {
+           $sum: 1,
+         },
+       },
+     },
+     {
+       /**
+        * Sort the waiters decreasing by bills
+        */
+       $sort: {
+         total_bills: -1,
+       },
+     },
+     {
+       /**
+        * Select only the first waiter
+        */
+       $limit: 1,
+     },
+     {
+       /**
+        * Retrieve the waiter information
+        */
+       $lookup: {
+         from: "employees",
+         localField: "_id",
+         foreignField: "_id",
+         as: "best_waiter",
+       },
+     },
+     {
+       /**
+        * Unwind it
+        */
+       $unwind: {
+         path: "$best_waiter",
+       },
+     },
+   ]
+   ````
+
 ## Reservaciones
 
-1. Listar las reservaciones actuales (ordenar por fecha)
-2. Buscar reservaciones por nombre
-3. Buscar reservaciones por teléfono
-4. Listar las reservaciones pasadas
+1. Listar las reservaciones actuales (ordenar por fecha).
+
+   ````json
+   db.reservations.find({
+       "date": {$gte: new Date()}
+   }).sort({"date": 1})
+   ````
+2. Buscar reservaciones actuales por nombre.
+
+   ````json
+   db.reservations.find({
+       $and: [
+           {"date": {$gte: new Date()}},
+           {"client": {
+               $regex: "NOMBRE*",
+               $options: 'i'
+           }}
+       ]    
+   }).sort({"date": 1})
+   ````
+3. Buscar reservaciones actuales por teléfono.
+
+   ````json
+   db.reservations.find({
+       $and: [
+           {"date": {$gte: new Date()}},
+           {"phone": {
+               $regex: "TELÉFONO*",
+               $options: 'i'
+           }}
+       ]    
+   }).sort({"date": 1})
+   ````
+4. Listar las reservaciones pasadas.
+
+   ````json
+   db.reservations.find({
+       "date": {$lt: new Date()}
+   }).sort({"date": -1})
+   ````
+5. Buscar reservaciones pasadas por nombre.
+
+   ````json
+   db.reservations.find({
+       $and: [
+           {"date": {$lt: new Date()}},
+           {"client": {
+               $regex: "NOMBRE*",
+               $options: 'i'
+           }}
+       ]    
+   }).sort({"date": -1})
+   ````
+6. Buscar reservaciones pasadas por teléfono.
+
+   ````json
+   db.reservations.find({
+       $and: [
+           {"date": {$lt: new Date()}},
+           {"phone": {
+               $regex: "TELÉFONO*",
+               $options: 'i'
+           }}
+       ]    
+   }).sort({"date": -1})
+   ````
+7. Buscar todas las reservaciones por nombre.
+
+   ````json
+   db.reservations.find({
+       "client": {
+           $regex: "NOMBRE*",
+           $options: 'i'
+       }
+   }).sort({"date": -1})
+   ````
+8. Buscar todas las reservaciones por teléfono.
+
+   ````json
+   db.reservations.find({
+      	"phone": {
+           $regex: "TELÉFONO*",
+           $options: 'i'
+       }
+   }).sort({"date": -1})
+   ````
 
 ## Permisos
 
-1. Buscar permisos por nombre
+1. Buscar permisos por nombre.
+
+   ````json
+   db.permissions.find({
+      	"name": {
+           $regex: "NOMBRE*",
+           $options: 'i'
+       }
+   }
+   ````
+
